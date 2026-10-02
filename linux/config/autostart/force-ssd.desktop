@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Force xfwm4 SSD on CSD apps
+Exec=/home/kv/.local/bin/force-ssd-chromium
+Hidden=false
+X-XfceAutostartOverride=true

@@ -1,0 +1,81 @@
+* {
+    background:       #1a1b26;
+    foreground:       #c0caf5;
+    border-color:     #3b4261;
+    selected-bg:      #292e42;
+    selected-fg:      #7aa2f7;
+    accent:           #7aa2f7;
+}
+
+window {
+    background-color: @background;
+    border: 2;
+    border-color: @border-color;
+    border-radius: 12;
+    padding: 16;
+}
+
+mainbox {
+    spacing: 8;
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    spacing: 8;
+    children: [ "prompt", "entry" ];
+    background-color: #24283b;
+    border-radius: 8;
+    padding: 12 16;
+}
+
+prompt {
+    text-color: @accent;
+    font: "JetBrainsMono Nerd Font Bold 11";
+    padding: 0 8 0 0;
+}
+
+entry {
+    text-color: @foreground;
+    placeholder-color: #a9b1d6;
+    font: "JetBrainsMono Nerd Font 11";
+    placeholder: "Buscar aplicaciones...";
+}
+
+listview {
+    spacing: 4;
+    lines: 10;
+    fixed-height: true;
+    scrollbar: false;
+    dynamic: true;
+}
+
+element {
+    padding: 10 12;
+    border-radius: 8;
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element selected {
+    background-color: @selected-bg;
+    text-color: @selected-fg;
+}
+
+element-icon {
+    padding: 0 12 0 0;
+    text-color: #a9b1d6;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color: inherit;
+}
+
+message {
+    background-color: #24283b;
+    text-color: #a9b1d6;
+    border: 1px solid @border-color;
+    border-radius: 8;
+    padding: 12 16;
+    margin: 8 0 0 0;
+}

@@ -1,0 +1,8 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    icon-theme: "breeze-dark";
+    font: "JetBrainsMono Nerd Font 12";
+}
+
+@import "theme.rasi"

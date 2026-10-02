@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Polybar Big Sur
+Comment=Mac Big Sur Polybar
+Exec=/home/kv/.config/polybar/launch.sh
+StartupNotify=false
+Terminal=false
+X-GNOME-Autostart-enabled=true

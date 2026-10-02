@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Zoom Width Clamp
+Comment=Keeps Zoom windows within the monitor width so the chat/participants panel stays visible
+Exec=/home/kv/.local/bin/zoom-clamp.sh
+X-GNOME-Autostart-enabled=true
+Hidden=false
+NoDisplay=true

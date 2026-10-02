@@ -1,0 +1,177 @@
+/*******************************************************************************
+ * ROFI Color theme - Tokyo Night
+ * Based on: lairizzle/rofi-tokyonight
+ ********************************************************************************/
+
+* {
+    selected-normal-foreground:  #7dcfff;
+    foreground:                  #e0eafc;
+    normal-foreground:           @foreground;
+    alternate-normal-background: #24283b;
+    red:                         #f7768e;
+    selected-urgent-foreground:  #7dcfff;
+    blue:                        #7dcfff;
+    urgent-foreground:           #f7768e;
+    alternate-urgent-background: #24283b;
+    active-foreground:           #7dcfff;
+    lightbg:                     #d9deef;
+    selected-active-foreground:  #7dcfff;
+    alternate-active-background: #24283b;
+    background:                  rgba(26, 27, 38, 0.93);
+    bordercolor:                 #7dcfff;
+    alternate-normal-foreground: @foreground;
+    normal-background:           rgba(36, 40, 59, 0.06);
+    lightfg:                     #c8d2ff;
+    selected-normal-background:  #414868;
+    border-color:                @bordercolor;
+    spacing:                     2;
+    separatorcolor:              #414868;
+    urgent-background:           #1a1b26;
+    selected-urgent-background:  #f7768e;
+    alternate-urgent-foreground: @urgent-foreground;
+    background-color:            rgba(0, 0, 0, 0);
+    alternate-active-foreground: @active-foreground;
+    active-background:           #1a1b26;
+    selected-active-background:  #414868;
+}
+
+window {
+    background-color: @background;
+    border:           2px;
+    border-color:     @bordercolor;
+    border-radius:    8px;
+    padding:          16px;
+    width:            35%;
+}
+
+mainbox {
+    border:  0;
+    padding: 0;
+}
+
+message {
+    border:       2px 0px 0px;
+    border-color: @separatorcolor;
+    padding:      4px;
+}
+
+textbox {
+    text-color: @foreground;
+}
+
+listview {
+    fixed-height: 0;
+    border:       2px 0px 0px;
+    border-color: @separatorcolor;
+    spacing:      2px;
+    scrollbar:    true;
+    padding:      4px 0px 0px;
+}
+
+element {
+    border:  0;
+    padding: 6px 8px;
+    border-radius: 4px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+element.normal.normal {
+    background-color: transparent;
+    text-color:       @foreground;
+}
+
+element.normal.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+
+element.normal.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+
+element.selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+
+element.selected.urgent {
+    background-color: @selected-urgent-background;
+    text-color:       @selected-urgent-foreground;
+}
+
+element.selected.active {
+    background-color: @selected-active-background;
+    text-color:       @selected-active-foreground;
+}
+
+element.alternate.normal {
+    background-color: @alternate-normal-background;
+    text-color:       @alternate-normal-foreground;
+}
+
+element.alternate.urgent {
+    background-color: @alternate-urgent-background;
+    text-color:       @alternate-urgent-foreground;
+}
+
+element.alternate.active {
+    background-color: @alternate-active-background;
+    text-color:       @alternate-active-foreground;
+}
+
+scrollbar {
+    width:        4px;
+    border:       0;
+    handle-width: 8px;
+    padding:      0;
+    handle-color: rgba(125, 207, 255, 0.8);
+}
+
+mode-switcher {
+    border:       2px 0px 0px;
+    border-color: @separatorcolor;
+}
+
+button.selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+
+inputbar {
+    spacing:    4px;
+    text-color: @normal-foreground;
+    padding:    4px;
+}
+
+case-indicator {
+    spacing:    0;
+    text-color: @normal-foreground;
+}
+
+entry {
+    spacing:    0;
+    text-color: @foreground;
+    placeholder: "Buscar aplicaciones...";
+    placeholder-color: @lightfg;
+}
+
+prompt {
+    spacing:    0;
+    text-color: @blue;
+}
+
+inputbar {
+    children:   [ prompt, textbox-prompt-colon, entry, case-indicator ];
+}
+
+textbox-prompt-colon {
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em;
+    text-color: @blue;
+}
