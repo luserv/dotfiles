@@ -1,0 +1,6 @@
+
+# Local-only artifacts
+odd/
+*.bak
+*.backup*
+.dotfiles-backup/
