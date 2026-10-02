@@ -1,0 +1,30 @@
+#!/bin/bash
+
+[[ -f ~/.config/user-dirs.dirs ]] && source ~/.config/user-dirs.dirs
+OUTPUT_DIR="${SCREENSHOT_DIR:-${XDG_PICTURES_DIR:-$HOME/Pictures}}"
+
+if [[ ! -d $OUTPUT_DIR ]]; then
+  mkdir -p "$OUTPUT_DIR"
+fi
+
+MODE="${1:-smart}"
+
+case "$MODE" in
+  fullscreen)
+    GEOMETRY=""
+    ;;
+  window)
+    GEOMETRY="--focused"
+    ;;
+  region | smart)
+    GEOMETRY="--select"
+    ;;
+esac
+
+FILENAME="screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+FILEPATH="$OUTPUT_DIR/$FILENAME"
+
+scrot "$GEOMETRY" "$FILEPATH" || exit 1
+xclip -selection clipboard -t image/png <"$FILEPATH"
+notify-send -i "$FILEPATH" "Screenshot saved to clipboard and file" "$FILEPATH"
+echo "$FILEPATH"

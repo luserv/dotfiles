@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Replica Omarchy/Hyprland "universal copy":
+# Ctrl+C in normal apps, Ctrl+Insert in terminals.
+set -euo pipefail
+
+CLASS=$(xdotool getactivewindow getwindowclassname 2>/dev/null)
+
+if [[ -n "$CLASS" ]] && echo "$CLASS" | grep -qiE \
+  '^(alacritty|kitty|com\.mitchellh\.ghostty|foot|org\.codeberg\.dnkl\.foot|wezterm|org\.omarchy\..*|tui\..*|xfce4-terminal|gnome-terminal|konsole|xterm|urxvt|rxvt|st|tilix|terminology|lxterminal|mate-terminal)$'; then
+  xdotool key --clearmodifiers ctrl+Insert
+else
+  xdotool key --clearmodifiers ctrl+c
+fi

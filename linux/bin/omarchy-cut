@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Replica Omarchy/Hyprland "universal cut": Ctrl+X.
+exec xdotool key --clearmodifiers ctrl+x

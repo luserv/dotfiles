@@ -1,0 +1,58 @@
+#!/bin/bash
+# tile-third <left|right|top|bottom> [parts] - tile the active window to 1/parts of its monitor (default 3)
+# tile-third <top-left|top-right|bottom-left|bottom-right> - tile the active window to a quarter
+# Multi-monitor aware (detects which monitor the window is on).
+set -e
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <left|right|top|bottom> [parts] | <top-left|top-right|bottom-left|bottom-right>" >&2
+  exit 1
+fi
+
+# Grid cell: COLS x ROWS grid, window placed at (COL, ROW)
+PARTS=${2:-3}
+case "$1" in
+  left)         COLS=$PARTS; ROWS=1; COL=0;            ROW=0;;
+  right)        COLS=$PARTS; ROWS=1; COL=$((PARTS-1)); ROW=0;;
+  top)          COLS=1; ROWS=$PARTS; COL=0;            ROW=0;;
+  bottom)       COLS=1; ROWS=$PARTS; COL=0;            ROW=$((PARTS-1));;
+  top-left)     COLS=2; ROWS=2; COL=0; ROW=0;;
+  top-right)    COLS=2; ROWS=2; COL=1; ROW=0;;
+  bottom-left)  COLS=2; ROWS=2; COL=0; ROW=1;;
+  bottom-right) COLS=2; ROWS=2; COL=1; ROW=1;;
+  *) echo "Invalid: $1" >&2; exit 1;;
+esac
+
+WIN=$(xdotool getactivewindow 2>/dev/null) || exit 0
+eval "$(xdotool getwindowgeometry --shell "$WIN" | grep -E '^(X|Y|WIDTH|HEIGHT)=')"
+
+WCX=$((X + WIDTH / 2))
+SW=1920; SH=1080; MX=0; MY=0
+while read -r MON_INFO; do
+  [ -z "$MON_INFO" ] && continue
+  eval "$(echo "$MON_INFO" | awk -F'[x+/]' '{printf "MSW=%s MSH=%s MMX=%s MMY=%s", $1, $3, $5, $6}')"
+  if [ "$WCX" -ge "$MMX" ] && [ "$WCX" -lt "$((MMX + MSW))" ]; then
+    SW=$MSW; SH=$MSH; MX=$MMX; MY=$MMY
+    break
+  fi
+done < <(xrandr --listactivemonitors | awk 'NR>1 {print $3}')
+
+# Clip to the usable work area so panels/bars (e.g. polybar) stay visible
+read -r WA_X WA_Y WA_W WA_H < <(xprop -root _NET_WORKAREA | awk -F'= ' '{print $2}' | tr -d ',' | awk '{print $1, $2, $3, $4}')
+if [ -n "$WA_H" ]; then
+  [ "$MY" -lt "$WA_Y" ] && { SH=$((SH - (WA_Y - MY))); MY=$WA_Y; }
+  [ $((MY + SH)) -gt $((WA_Y + WA_H)) ] && SH=$((WA_Y + WA_H - MY))
+fi
+
+SIZE_X=$((SW / COLS))
+SIZE_Y=$((SH / ROWS))
+POS_X=$((MX + SIZE_X * COL))
+POS_Y=$((MY + SIZE_Y * ROW))
+
+# wmctrl sizes the client area; subtract the frame (title bar + borders) so the whole window fits
+read -r FL FR FT FB < <(xprop -id "$WIN" _NET_FRAME_EXTENTS 2>/dev/null | awk -F'= ' '{print $2}' | tr -d ',')
+SIZE_X=$((SIZE_X - ${FL:-0} - ${FR:-0}))
+SIZE_Y=$((SIZE_Y - ${FT:-0} - ${FB:-0}))
+
+wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz >/dev/null
+wmctrl -r :ACTIVE: -e 0,"$POS_X","$POS_Y","$SIZE_X","$SIZE_Y" >/dev/null

@@ -1,0 +1,5 @@
+#!/bin/bash
+export LIBGL_ALWAYS_SOFTWARE=1
+export QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu"
+export QT_QUICK_BACKEND=software
+exec /usr/bin/kdenlive "$@"

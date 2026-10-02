@@ -1,0 +1,69 @@
+#!/bin/bash
+# zmishare - nested X desktop inside a window, for stable Zoom screen sharing.
+# Zoom's full-screen capture on X11 freezes and never recovers; sharing a
+# single window keeps working. This gives that window a whole desktop inside,
+# so you can switch apps freely without re-sharing.
+#
+# Usage: zmishare [command...]   start (or reuse) the desktop, run command
+#        zmishare                start it with a terminal
+#        zmishare --stop         tear it down
+set -euo pipefail
+
+D="${ZMISHARE_DISPLAY:-:2}"
+GEOM="${ZMISHARE_GEOMETRY:-1600x900}"
+TITLE="${ZMISHARE_TITLE:-Zoom Share}"
+
+display_up() { [ -e "/tmp/.X11-unix/X${D#:}" ]; }
+
+case "${1:-}" in
+	--stop)
+		if display_up; then
+			pkill -f "Xephyr ${D} " || true
+			sleep 0.3
+		fi
+		echo "zmishare: ${D} stopped"
+		exit 0
+		;;
+	-h | --help)
+		sed -n '2,9p' "$0" | cut -c3-
+		exit 0
+		;;
+esac
+
+if display_up; then
+	echo "zmishare: ${D} already running, reusing it"
+else
+	Xephyr "$D" -screen "$GEOM" -resizeable -title "$TITLE" -nolisten tcp &
+	for _ in $(seq 1 50); do
+		display_up && break
+		sleep 0.1
+	done
+	if ! display_up; then
+		echo "zmishare: ${D} failed to start" >&2
+		exit 1
+	fi
+	DISPLAY="$D" xfwm4 >/dev/null 2>&1 &
+	sleep 0.5
+fi
+
+if [ "$#" -gt 0 ]; then
+	DISPLAY="$D" "$@" &
+else
+	DISPLAY="$D" foot &
+fi
+
+sleep 0.8
+win=$(xdotool search --name "^${TITLE}\$" 2>/dev/null | tail -n 1 || true)
+if [ -n "$win" ]; then
+	read -r sw sh < <(xdotool getdisplaygeometry)
+	gw=${GEOM%x*}
+	gh=${GEOM#*x}
+	x=$(((sw - gw) / 2))
+	y=$(((sh - gh) / 2 - 24))
+	[ "$x" -lt 0 ] && x=0
+	[ "$y" -lt 0 ] && y=0
+	xdotool windowmove "$win" "$x" "$y" 2>/dev/null || true
+	xdotool windowactivate "$win" 2>/dev/null || true
+fi
+
+echo "zmishare: share the \"${TITLE}\" window in Zoom (Share > Window)"

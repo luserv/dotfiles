@@ -1,0 +1,6 @@
+#!/bin/bash
+target=$((${1:-1} - 1))
+win=$(xdotool getactivewindow 2>/dev/null)
+[ -z "$win" ] && exit 1
+xdotool set_desktop_for_window "$win" "$target"
+xdotool set_desktop "$target"

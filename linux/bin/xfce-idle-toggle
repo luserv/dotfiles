@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -eu
+
+state_dir="${XDG_RUNTIME_DIR:-/tmp}"
+pid_file="$state_dir/xfce-idle-inhibit.pid"
+
+if [ -f "$pid_file" ]; then
+    pid=$(cat "$pid_file")
+    if kill -0 "$pid" 2>/dev/null; then
+        kill "$pid" 2>/dev/null || true
+        rm -f "$pid_file"
+        notify-send -i xfce4-power-manager "Pantalla activa" "Suspension permitida nuevamente" 2>/dev/null || true
+        exit 0
+    fi
+    rm -f "$pid_file"
+fi
+
+systemd-inhibit \
+    --what=idle:sleep:handle-lid-switch \
+    --who=XFCE \
+    --why="Mantener el dispositivo activo" \
+    --mode=block \
+    sleep infinity >/dev/null 2>&1 &
+
+echo "$!" > "$pid_file"
+notify-send -i xfce4-power-manager "Pantalla activa" "Suspension bloqueada" 2>/dev/null || true

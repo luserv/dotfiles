@@ -1,0 +1,32 @@
+#!/bin/bash
+# Force xfwm4 server-side decorations on apps using CSD
+# Apps like Chromium, Electron set _MOTIF_WM_HINTS decoration=0 and/or
+# _GTK_FRAME_EXTENTS to draw their own thin borders, breaking resize.
+# This script removes those hints so xfwm4 draws proper title bar + borders.
+#
+# Skips: desktop (xfdesktop), tray/panel apps (don't need decoration)
+
+# Windows to never touch (tray apps, desktop)
+SKIP_CLASSES="caffeine|Clipman|xfce4-panel|Desktop|xfdesktop"
+
+while true; do
+  for wid in $(xdotool search --name "" 2>/dev/null); do
+    # Only process normal windows (not docks, trays, panels)
+    wtype=$(xprop -id "$wid" _NET_WM_WINDOW_TYPE 2>/dev/null | grep -oP 'ATOM.*= \K\S+')
+    [ "$wtype" != "_NET_WM_WINDOW_TYPE_NORMAL" ] && [ -n "$wtype" ] && continue
+
+    name=$(xprop -id "$wid" WM_NAME 2>/dev/null | cut -d'"' -f2)
+    [ -z "$name" ] && continue
+    echo "$name" | grep -qiE "$SKIP_CLASSES" && continue
+
+    # Check if window has CSD hints
+    motif=$(xprop -id "$wid" _MOTIF_WM_HINTS 2>/dev/null | grep "0x2, 0x0")
+    gtk_ext=$(xprop -id "$wid" _GTK_FRAME_EXTENTS 2>/dev/null | grep -oP '\d+, \d+, \d+, \d+' | grep -v '0, 0, 0, 0')
+
+    if [ -n "$motif" ] || [ -n "$gtk_ext" ]; then
+      xprop -id "$wid" -remove _MOTIF_WM_HINTS 2>/dev/null
+      xprop -id "$wid" -remove _GTK_FRAME_EXTENTS 2>/dev/null
+    fi
+  done
+  sleep 3
+done
