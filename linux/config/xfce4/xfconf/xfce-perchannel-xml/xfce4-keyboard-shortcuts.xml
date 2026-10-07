@@ -124,36 +124,6 @@
       <property name="&lt;Super&gt;0" type="string" value="xdotool set-desktop 9">
         <property name="enabled" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;1" type="string" value="move-window-to-workspace 1">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;2" type="string" value="move-window-to-workspace 2">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;3" type="string" value="move-window-to-workspace 3">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;4" type="string" value="move-window-to-workspace 4">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;5" type="string" value="move-window-to-workspace 5">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;6" type="string" value="move-window-to-workspace 6">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;7" type="string" value="move-window-to-workspace 7">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;8" type="string" value="move-window-to-workspace 8">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;9" type="string" value="move-window-to-workspace 9">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
-      <property name="&lt;Super&gt;&lt;Shift&gt;0" type="string" value="move-window-to-workspace 10">
-        <property name="enabled" type="bool" value="true"/>
-      </property>
       <property name="&lt;Control&gt;&lt;Shift&gt;v" type="string" value="omarchy-paste"/>
       <property name="&lt;Super&gt;x" type="string" value="omarchy-cut"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;v" type="string" value="xfce4-popup-clipman"/>
@@ -181,6 +151,16 @@
       <property name="&lt;Super&gt;&lt;Alt&gt;j" type="string" value="/home/kv/.local/bin/tile-third bottom-left"/>
       <property name="&lt;Super&gt;&lt;Alt&gt;k" type="string" value="/home/kv/.local/bin/tile-third bottom-right"/>
       <property name="&lt;Super&gt;j" type="string" value="wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;exclam" type="string" value="move-window-to-workspace 1"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;at" type="string" value="move-window-to-workspace 2"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;numbersign" type="string" value="move-window-to-workspace 3"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;dollar" type="string" value="move-window-to-workspace 4"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;percent" type="string" value="move-window-to-workspace 5"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;asciicircum" type="string" value="move-window-to-workspace 6"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;ampersand" type="string" value="move-window-to-workspace 7"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;asterisk" type="string" value="move-window-to-workspace 8"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;parenleft" type="string" value="move-window-to-workspace 9"/>
+      <property name="&lt;Super&gt;&lt;Shift&gt;parenright" type="string" value="move-window-to-workspace 10"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
