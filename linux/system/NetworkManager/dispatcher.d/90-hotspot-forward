@@ -1,0 +1,12 @@
+#!/bin/sh
+# Allow forwarding for the MiHotspot connection through Docker's FORWARD policy.
+[ "$CONNECTION_ID" = "MiHotspot" ] || exit 0
+[ "$2" = "up" ] || exit 0
+
+IPT=/usr/bin/iptables
+$IPT -L DOCKER-USER -n >/dev/null 2>&1 || exit 0
+
+$IPT -C DOCKER-USER -i wlan0 -o enp43s0 -j ACCEPT 2>/dev/null ||
+    $IPT -I DOCKER-USER -i wlan0 -o enp43s0 -j ACCEPT
+$IPT -C DOCKER-USER -i enp43s0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 2>/dev/null ||
+    $IPT -I DOCKER-USER -i enp43s0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT

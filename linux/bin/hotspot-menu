@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Rofi submenu for a NetworkManager hotspot: toggle, rename, change password, show QR.
+# Usage: hotspot-menu [connection-name]
+set -euo pipefail
+
+CON="${1:-MiHotspot}"
+
+get() { nmcli -s -g "$1" connection show "$CON"; }
+
+is_active() { nmcli -t -f NAME connection show --active | rg -qx -F "$CON"; }
+
+# Escape the characters that are special in the WIFI: QR payload.
+esc() { sed -e 's/[\\;,:"]/\\&/g' <<<"$1"; }
+
+prompt_text() { rofi -dmenu -p "$1" -l 0 "${@:2}" </dev/null; }
+
+reapply() { is_active && nmcli connection up "$CON" >/dev/null || true; }
+
+toggle() {
+    if is_active; then
+        nmcli connection down "$CON" >/dev/null
+        notify-send "Hotspot" "$CON turned off"
+    else
+        nmcli connection up "$CON" >/dev/null
+        notify-send "Hotspot" "$CON turned on"
+    fi
+}
+
+show_qr() {
+    local ssid pass payload
+    ssid=$(get 802-11-wireless.ssid)
+    pass=$(get 802-11-wireless-security.psk)
+    payload="WIFI:T:WPA;S:$(esc "$ssid");P:$(esc "$pass");;"
+    alacritty --class hotspot-qr -T "Hotspot QR" -e bash -c '
+        qrencode -t ANSIUTF8 -m 2 "$1"
+        printf "\n  SSID: %s\n  Pass: %s\n\n  Press Enter to close" "$2" "$3"
+        read -r' _ "$payload" "$ssid" "$pass"
+}
+
+change_name() {
+    local ssid
+    ssid=$(prompt_text "New hotspot name" ) || exit 0
+    [ -n "$ssid" ] || exit 0
+    nmcli connection modify "$CON" 802-11-wireless.ssid "$ssid"
+    reapply
+    notify-send "Hotspot" "Name changed to $ssid"
+}
+
+change_password() {
+    local pass
+    pass=$(prompt_text "New password (min 8)" -password) || exit 0
+    if [ "${#pass}" -lt 8 ]; then
+        notify-send "Hotspot" "Password must have at least 8 characters"
+        exit 1
+    fi
+    nmcli connection modify "$CON" 802-11-wireless-security.psk "$pass"
+    reapply
+    notify-send "Hotspot" "Password updated"
+}
+
+if is_active; then toggle_label="Turn off"; else toggle_label="Turn on"; fi
+
+choice=$(printf '%s\nChange name\nChange password\nShow QR\n' "$toggle_label" |
+    rofi -dmenu -i -p "Hotspot $CON") || exit 0
+case "$choice" in
+    "Turn on" | "Turn off") toggle ;;
+    "Change name") change_name ;;
+    "Change password") change_password ;;
+    "Show QR") show_qr ;;
+esac

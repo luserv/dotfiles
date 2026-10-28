@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# dmenu_command wrapper for networkmanager_dmenu.
+# Named "rofi" on purpose so networkmanager_dmenu keeps passing its rofi flags.
+# Picking a "<name> '<ssid>':Hotspot" line opens hotspot-menu instead.
+ROFI_BIN="${ROFI_BIN:-/usr/bin/rofi}"
+HOTSPOT_MENU="${HOTSPOT_MENU:-$HOME/.local/bin/hotspot-menu}"
+
+sel=$("$ROFI_BIN" "$@")
+rc=$?
+
+line="${sel#==}"
+line="${line#"${line%%[![:space:]]*}"}"
+
+if [ "$rc" -eq 0 ] && [[ $line =~ ^(.*)\ \'.*\':Hotspot[[:space:]]*$ ]]; then
+    "$HOTSPOT_MENU" "${BASH_REMATCH[1]}"
+    exit 0
+fi
+
+[ -n "$sel" ] && printf '%s\n' "$sel"
+exit "$rc"
