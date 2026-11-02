@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Power menu built on rofi (Tokyo Night theme from ~/.config/rofi).
+# Usage: power-menu
+# Requires: rofi, xflock4, xfce4-session-logout.
+set -u
+
+THEME="$HOME/.config/rofi/power-menu.rasi"
+
+# Nerd Font glyphs written as escapes so the file stays plain ASCII.
+LOCK=$'  Lock'
+LOGOUT=$'  Log out'
+SUSPEND=$'  Suspend'
+REBOOT=$'  Reboot'
+SHUTDOWN=$'  Shut down'
+NO=$'  No'
+YES=$'  Yes'
+
+rofi_menu() {
+  rofi -dmenu -i -no-custom -p "$1" -theme "$THEME" "${@:2}"
+}
+
+# confirm <action label>: returns 0 only when the user picks "Yes".
+confirm() {
+  local answer
+  answer=$(printf '%s\n' "$NO" "$YES" | rofi_menu "$1?" -selected-row 0)
+  [ "$answer" = "$YES" ]
+}
+
+choice=$(printf '%s\n' "$LOCK" "$LOGOUT" "$SUSPEND" "$REBOOT" "$SHUTDOWN" | rofi_menu "Power")
+
+case "$choice" in
+  "$LOCK") xflock4 ;;
+  "$SUSPEND") xfce4-session-logout --suspend ;;
+  "$LOGOUT") confirm "Log out" && xfce4-session-logout --logout --fast ;;
+  "$REBOOT") confirm "Reboot" && xfce4-session-logout --reboot --fast ;;
+  "$SHUTDOWN") confirm "Shut down" && xfce4-session-logout --halt --fast ;;
+  *) exit 0 ;;
+esac

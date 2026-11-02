@@ -336,7 +336,6 @@ plymouth
 plymouth-kcm
 pnpm
 polkit-kde-agent
-polybar
 poppler-glib
 postgresql
 postgresql-libs
@@ -457,14 +456,9 @@ xdg-user-dirs
 xdotool
 xfce4-appfinder
 xfce4-clipman-plugin
-xfce4-docklike-plugin
-xfce4-panel
-xfce4-panel-profiles
 xfce4-power-manager
 xfce4-session
 xfce4-settings
-xfce4-terminal
-xfce4-whiskermenu-plugin
 xfconf
 xfdesktop
 xfsprogs

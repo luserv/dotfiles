@@ -1,6 +1,6 @@
 # Dotfiles de Linux
 
-Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta carpeta). La configuración de Linux proviene de un sistema CachyOS con Xfce (xfwm4), fish, alacritty, polybar, rofi y picom.
+Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta carpeta). La configuración de Linux proviene de un sistema CachyOS con Xfce (xfwm4), fish, alacritty, rofi, picom y conky (sin barra ni panel).
 
 ## Estructura
 
@@ -73,7 +73,9 @@ Navegación entre workspaces y panel de estado en el escritorio.
 
 | Pieza | Función |
 |---|---|
-| `linux/config/conky/conky.conf` | Panel: hora, workspaces, CPU, temperatura, uptime, RAM, disco, red (con IP de `wlan0`) y top de procesos |
+| `linux/config/conky/modern/conky.conf` + `modern.lua` | **Panel activo** (lo arranca el autostart): dibujado con Cairo, paleta Nord. Hora, fecha, uptime, IP, puntos de workspaces, anillos de CPU/RAM/disco con cantidades, barras por hilo de CPU, red y top de procesos |
+| `linux/config/conky/modern/ws-state.sh` | Estado de cada workspace para el panel: `A` activo, `O` con ventanas, `E` vacío |
+| `linux/config/conky/conky.conf` | Panel anterior, en texto plano (alternativa): hora, workspaces, CPU, temperatura, RAM, disco, red y top de procesos |
 | `linux/config/conky/workspaces.sh` | Fila de workspaces para Conky: activo `[n]`, con ventanas normal, vacíos atenuados |
 | `linux/config/conky/ws-notify.sh` | Notificación (3 s) con los workspaces que tienen ventanas y el actual (`Super+Ctrl+Q`) |
 | `linux/bin/ws-cycle` | `ws-cycle next\|prev`: salta solo entre workspaces con ventanas, con vuelta al otro extremo |
@@ -85,9 +87,19 @@ Navegación entre workspaces y panel de estado en el escritorio.
 Notas:
 
 - `sxhkd` es necesario porque `xfsettingsd` no dispara de forma fiable los atajos con `Shift+Tab`. Hay que quitar del XML cualquier atajo `<Super><Shift>Tab`, o ambos compiten por la tecla.
-- No asignes un atajo a `Super_L` solo (por ejemplo para el menú whisker): captura la tecla y `Super+Shift+Tab` solo funciona si se aprieta Shift primero.
+- No asignes un atajo a `Super_L` solo (por ejemplo para un menú de aplicaciones): captura la tecla y `Super+Shift+Tab` solo funciona si se aprieta Shift primero.
 - Las rutas `/home/kv/...` están fijas en `conky.desktop` y en el XML de atajos; ajústalas si el usuario es otro.
+- Tamaño del panel nuevo: se controla con `SCALE` al inicio de `modern.lua` (ahora 1.15). Si lo cambias, ajusta en `modern/conky.conf` `minimum_width` y `maximum_width` (360 × `SCALE`) y `minimum_height` (690 × `SCALE`).
+- El panel nuevo necesita conky con Lua y Cairo (`conky -v` los lista) y un compositor activo para la transparencia. Usa la interfaz `wlan0` y el sensor `coretemp`; ajústalos en `modern.lua` si tu equipo es otro.
+- Volver al panel anterior: cambia `conky.desktop` para que apunte a `~/.config/conky/conky.conf`.
 - Dependencias: `conky`, `sxhkd`, `wmctrl`, `xdotool` y `libnotify` (están en `pacman-explicit.txt`).
+
+## Menú de apagado
+
+`Super+Shift+Q` abre un menú de rofi con Lock, Log out, Suspend, Reboot y Shut down. Log out, Reboot y Shut down piden confirmación (Yes/No) antes de ejecutarse.
+
+- `linux/bin/power-menu`: el script. Usa `xflock4` y `xfce4-session-logout`.
+- `linux/config/rofi/power-menu.rasi`: tema compacto sobre `theme.rasi` (Tokyo Night). Los iconos son glifos de Nerd Font, así que necesitas una fuente Nerd Font en rofi.
 
 ## Qué se excluye por privacidad
 

@@ -1,0 +1,41 @@
+/* Power menu: compact, centered list on top of the shared Tokyo Night theme. */
+@import "theme.rasi"
+
+window {
+    width:    20%;
+    location: center;
+    anchor:   center;
+}
+
+mainbox {
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    children: [ "prompt" ];
+    padding:  0px 0px 8px 0px;
+}
+
+prompt {
+    text-color: @blue;
+}
+
+listview {
+    lines:     5;
+    scrollbar: false;
+    columns:   1;
+}
+
+element {
+    padding:       10px 12px;
+    border-radius: 6px;
+}
+
+element-text {
+    text-color: inherit;
+}
+
+element selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
