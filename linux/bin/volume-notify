@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Usage: volume-notify up|down|mute
+case "$1" in
+  up)   wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+ ;;
+  down) pactl set-sink-volume @DEFAULT_SINK@ -5% ;;
+  mute) pactl set-sink-mute @DEFAULT_SINK@ toggle ;;
+esac
+vol=$(pactl get-sink-volume @DEFAULT_SINK@ | head -1 | grep -o '[0-9]*%' | head -1 | tr -d '%')
+muted=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+if [ "$muted" = yes ]; then icon=audio-volume-muted; text="Muted"; else
+  icon=audio-volume-high; text="Volume ${vol}%"; fi
+notify-send -a volume -h string:x-dunst-stack-tag:volume -h int:value:"$vol" -i "$icon" "$text"

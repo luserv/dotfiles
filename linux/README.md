@@ -73,8 +73,10 @@ Navegación entre workspaces y panel de estado en el escritorio.
 
 | Pieza | Función |
 |---|---|
-| `linux/config/conky/modern/conky.conf` + `modern.lua` | **Panel activo** (lo arranca el autostart): dibujado con Cairo, paleta Nord. Hora, fecha, uptime, IP, puntos de workspaces, anillos de CPU/RAM/disco con cantidades, barras por hilo de CPU, red y top de procesos |
+| `linux/config/conky/modern/conky.conf` + `modern.lua` | **Panel activo** (lo arranca el autostart): dibujado con Cairo, paleta Nord. Hora, fecha, uptime, IP, puntos de workspaces, anillos de CPU/RAM/disco con cantidades, barras por hilo de CPU, red, sección de audio (volumen y qué app suena en qué workspace), batería y top de procesos |
 | `linux/config/conky/modern/ws-state.sh` | Estado de cada workspace para el panel: `A` activo, `O` con ventanas, `E` vacío |
+| `linux/config/conky/modern/audio-state.sh` | Volumen y streams de audio activos, con el workspace de la ventana que suena (necesita `wpctl`, `pactl`, `jq` y `wmctrl`) |
+| `linux/bin/volume-notify` | Teclas de volumen (`up\|down\|mute`) con notificación. Subir se limita al 100% con `wpctl -l 1.0` |
 | `linux/config/conky/conky.conf` | Panel anterior, en texto plano (alternativa): hora, workspaces, CPU, temperatura, RAM, disco, red y top de procesos |
 | `linux/config/conky/workspaces.sh` | Fila de workspaces para Conky: activo `[n]`, con ventanas normal, vacíos atenuados |
 | `linux/config/conky/ws-notify.sh` | Notificación (3 s) con los workspaces que tienen ventanas y el actual (`Super+Ctrl+Q`) |
@@ -89,7 +91,7 @@ Notas:
 - `sxhkd` es necesario porque `xfsettingsd` no dispara de forma fiable los atajos con `Shift+Tab`. Hay que quitar del XML cualquier atajo `<Super><Shift>Tab`, o ambos compiten por la tecla.
 - No asignes un atajo a `Super_L` solo (por ejemplo para un menú de aplicaciones): captura la tecla y `Super+Shift+Tab` solo funciona si se aprieta Shift primero.
 - Las rutas `/home/kv/...` están fijas en `conky.desktop` y en el XML de atajos; ajústalas si el usuario es otro.
-- Tamaño del panel nuevo: se controla con `SCALE` al inicio de `modern.lua` (ahora 1.15). Si lo cambias, ajusta en `modern/conky.conf` `minimum_width` y `maximum_width` (360 × `SCALE`) y `minimum_height` (690 × `SCALE`).
+- Tamaño del panel nuevo: se controla con `SCALE` al inicio de `modern.lua` (ahora 1.15). Si lo cambias, ajusta en `modern/conky.conf` `minimum_width` y `maximum_width` (360 × `SCALE`) y `minimum_height` (794 × `SCALE`).
 - El panel nuevo necesita conky con Lua y Cairo (`conky -v` los lista) y un compositor activo para la transparencia. Usa la interfaz `wlan0` y el sensor `coretemp`; ajústalos en `modern.lua` si tu equipo es otro.
 - Volver al panel anterior: cambia `conky.desktop` para que apunte a `~/.config/conky/conky.conf`.
 - Dependencias: `conky`, `sxhkd`, `wmctrl`, `xdotool` y `libnotify` (están en `pacman-explicit.txt`).

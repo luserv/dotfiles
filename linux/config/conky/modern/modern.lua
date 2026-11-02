@@ -5,9 +5,9 @@ require 'cairo'
 pcall(require, 'cairo_xlib')
 
 -- Global scale. Keep conky.conf minimum_width/height in sync:
---   minimum_width = 360 * SCALE, minimum_height = 690 * SCALE
+--   minimum_width = 360 * SCALE, minimum_height = 794 * SCALE
 local SCALE = 1.15
-local W, H = 360, 690
+local W, H = 360, 794
 local PAD = 20
 local FONT = 'DejaVu Sans'
 local MONO = 'DejaVu Sans Mono'
@@ -117,11 +117,67 @@ local function draw_background(cr)
   cairo_stroke(cr)
 end
 
+local BATTERY = '/sys/class/power_supply/BAT0'
+local AC_ONLINE = '/sys/class/power_supply/AC/online'
+
+local function read_line(path)
+  local f = io.open(path, 'r')
+  if not f then return nil end
+  local content = f:read('*l')
+  f:close()
+  return content
+end
+
+-- Battery icon plus "<pct>% · <state>", right-aligned. Skipped when no battery.
+local function draw_battery(cr, y)
+  local capacity = tonumber(read_line(BATTERY .. '/capacity') or '')
+  if not capacity then return end
+  local status = read_line(BATTERY .. '/status') or 'Unknown'
+  local plugged = read_line(AC_ONLINE) == '1'
+
+  local label = status
+  if status == 'Not charging' or status == 'Full' then
+    label = plugged and 'Plugged' or status
+  end
+
+  local color = COLORS.accent
+  if status == 'Discharging' then
+    if capacity <= 15 then
+      color = COLORS.crit
+    elseif capacity <= 30 then
+      color = COLORS.warn
+    end
+  end
+
+  local body_w, body_h = 26, 12
+  local bx, by = W - PAD - body_w - 3, y - 10
+
+  -- Outline and terminal nub.
+  rounded_rect(cr, bx, by, body_w, body_h, 3)
+  set_color(cr, COLORS.text, 0.8)
+  cairo_set_line_width(cr, 1.2)
+  cairo_stroke(cr)
+  rounded_rect(cr, bx + body_w + 1, by + 3.5, 2.5, body_h - 7, 1)
+  set_color(cr, COLORS.text, 0.8)
+  cairo_fill(cr)
+
+  -- Charge level.
+  local fill_w = (body_w - 4) * math.max(0, math.min(100, capacity)) / 100
+  if fill_w > 0 then
+    rounded_rect(cr, bx + 2, by + 2, fill_w, body_h - 4, 1.5)
+    set_color(cr, color, 1)
+    cairo_fill(cr)
+  end
+
+  text(cr, string.format('%d%% · %s', capacity, label), bx - 8, y, 12, COLORS.text, 0.7, 'r', { font = MONO })
+end
+
 local function draw_header(cr)
   text(cr, parse('${time %H:%M}'), PAD, 66, 52, COLORS.text, 1, 'l', { bold = true })
   text(cr, parse('${time %A %d %b}'), PAD + 2, 92, 14, COLORS.accent, 1, 'l')
   text(cr, 'up ' .. parse('${uptime_short}'), W - PAD, 56, 12, COLORS.text, 0.7, 'r', { font = MONO })
   text(cr, parse('${addr wlan0}'), W - PAD, 76, 12, COLORS.text, 0.7, 'r', { font = MONO })
+  draw_battery(cr, 98)
 end
 
 local function draw_workspaces(cr, y)
@@ -205,6 +261,65 @@ local function draw_network(cr, y)
   text(cr, '↑', W - PAD, y, 14, COLORS.accent, 1, 'r', { bold = true })
 end
 
+-- Shorten a UTF-8 string to max_chars characters, adding an ellipsis.
+local function truncate(str, max_chars)
+  if (utf8.len(str) or #str) <= max_chars then return str end
+  local cut = utf8.offset(str, max_chars) or (max_chars + 1)
+  return str:sub(1, cut - 1) .. '…'
+end
+
+local function split_fields(line)
+  local app, ws, title = line:match('^([^|]*)|([^|]*)|(.*)$')
+  return app, ws, title
+end
+
+-- Volume bar plus the streams that are playing right now and their workspace.
+local function draw_audio(cr, y)
+  section_label(cr, 'AUDIO', y)
+
+  local out = conky_parse('${execi 2 ~/.config/conky/modern/audio-state.sh}') or ''
+  local lines = {}
+  for line in out:gmatch('[^\r\n]+') do lines[#lines + 1] = line end
+  if #lines == 0 then return end
+
+  local vol, muted = lines[1]:match('^(%d+)|(%d)$')
+  vol = tonumber(vol) or 0
+  muted = muted == '1'
+
+  -- Volume bar.
+  local bar_x, bar_w, bar_h = PAD + 64, W - 2 * PAD - 64 - 56, 6
+  local bar_y = y + 18
+  text(cr, 'Volume', PAD, bar_y + 6, 12, COLORS.text, 0.8, 'l')
+  rounded_rect(cr, bar_x, bar_y, bar_w, bar_h, 3)
+  set_color(cr, COLORS.dim, 0.35)
+  cairo_fill(cr)
+  local fill = bar_w * math.min(vol, 100) / 100
+  if fill > 0 then
+    rounded_rect(cr, bar_x, bar_y, fill, bar_h, 3)
+    set_color(cr, muted and COLORS.dim or COLORS.accent, 1)
+    cairo_fill(cr)
+  end
+  local label = muted and 'Muted' or string.format('%d%%', vol)
+  text(cr, label, W - PAD, bar_y + 7, 12, muted and COLORS.warn or COLORS.text, 0.9, 'r', { font = MONO })
+
+  -- Playing streams (max 2) with the workspace that owns the window.
+  local shown = 0
+  for i = 2, #lines do
+    if shown >= 2 then break end
+    local app, ws, title = split_fields(lines[i])
+    if app then
+      local row = y + 44 + shown * 20
+      text(cr, 'WS ' .. ws, PAD, row, 12, COLORS.accent, 1, 'l', { bold = true, font = MONO })
+      local what = (title ~= '' and title) or app
+      text(cr, truncate(app .. ' · ' .. what, 31), PAD + 52, row, 12, COLORS.text, 0.85, 'l')
+      shown = shown + 1
+    end
+  end
+  if shown == 0 then
+    text(cr, 'Nothing playing', PAD, y + 44, 12, COLORS.text, 0.5, 'l')
+  end
+end
+
 local function draw_top(cr, y, title, name_expr, value_fn)
   section_label(cr, title, y)
   for i = 1, 3 do
@@ -243,11 +358,13 @@ function conky_main()
   separator(cr, 432)
   draw_network(cr, 458)
   separator(cr, 476)
+  draw_audio(cr, 500)
+  separator(cr, 580)
 
-  draw_top(cr, 500, 'TOP CPU', '${top name %d}', function(i)
+  draw_top(cr, 604, 'TOP CPU', '${top name %d}', function(i)
     return parse(string.format('${top cpu %d}', i)) .. '%'
   end)
-  draw_top(cr, 596, 'TOP RAM', '${top_mem name %d}', function(i)
+  draw_top(cr, 700, 'TOP RAM', '${top_mem name %d}', function(i)
     return parse(string.format('${top_mem mem_res %d}', i)) .. '  '
       .. parse(string.format('${top_mem mem %d}', i)) .. '%'
   end)
