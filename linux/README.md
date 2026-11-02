@@ -96,6 +96,12 @@ Notas:
 - Volver al panel anterior: cambia `conky.desktop` para que apunte a `~/.config/conky/conky.conf`.
 - Dependencias: `conky`, `sxhkd`, `wmctrl`, `xdotool` y `libnotify` (están en `pacman-explicit.txt`).
 
+## Mantener la pantalla activa (caffeine)
+
+`Super+Alt+C` alterna `linux/bin/xfce-idle-toggle`: mientras está activo bloquea con `systemd-inhibit` el estado inactivo (`idle`), la suspensión (`sleep`) y la acción al cerrar la tapa, y avisa con una notificación. El panel de Conky muestra `Keep awake` en la cabecera mientras esté activo.
+
+No se usa `caffeine-ng`: su icono necesita una bandeja del sistema y este setup no tiene panel ni barra.
+
 ## Menú de apagado
 
 `Super+Shift+Q` abre un menú de rofi con Lock, Log out, Suspend, Reboot y Shut down. Log out, Reboot y Shut down piden confirmación (Yes/No) antes de ejecutarse.

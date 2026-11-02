@@ -115,7 +115,7 @@
       <property name="&lt;Super&gt;9" type="string" value="xdotool set_desktop 8">
         <property name="enabled" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;0" type="string" value="xdotool set-desktop 9">
+      <property name="&lt;Super&gt;0" type="string" value="xdotool set_desktop 9">
         <property name="enabled" type="bool" value="true"/>
       </property>
       <property name="&lt;Control&gt;&lt;Shift&gt;v" type="string" value="omarchy-paste"/>
@@ -158,6 +158,7 @@
       <property name="&lt;Super&gt;&lt;Ctrl&gt;n" type="string" value="networkmanager_dmenu"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;q" type="string" value="/home/kv/.config/conky/ws-notify.sh"/>
       <property name="&lt;Super&gt;&lt;Shift&gt;q" type="string" value="/home/kv/.local/bin/power-menu"/>
+      <property name="&lt;Super&gt;&lt;Alt&gt;c" type="string" value="/home/kv/.local/bin/xfce-idle-toggle"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

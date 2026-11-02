@@ -172,12 +172,32 @@ local function draw_battery(cr, y)
   text(cr, string.format('%d%% · %s', capacity, label), bx - 8, y, 12, COLORS.text, 0.7, 'r', { font = MONO })
 end
 
+-- True while xfce-idle-toggle has its systemd inhibitor running.
+local function keep_awake_active()
+  local runtime = os.getenv('XDG_RUNTIME_DIR') or '/tmp'
+  local pid = read_line(runtime .. '/xfce-idle-inhibit.pid')
+  if not pid or not pid:match('^%d+$') then return false end
+  local proc = io.open('/proc/' .. pid .. '/cmdline', 'r')
+  if not proc then return false end
+  proc:close()
+  return true
+end
+
+local function draw_keep_awake(cr, y)
+  if not keep_awake_active() then return end
+  set_color(cr, COLORS.accent, 1)
+  cairo_arc(cr, PAD + 4, y - 4, 3.5, 0, 2 * math.pi)
+  cairo_fill(cr)
+  text(cr, 'Keep awake', PAD + 14, y, 11, COLORS.accent, 1, 'l', { bold = true })
+end
+
 local function draw_header(cr)
   text(cr, parse('${time %H:%M}'), PAD, 66, 52, COLORS.text, 1, 'l', { bold = true })
   text(cr, parse('${time %A %d %b}'), PAD + 2, 92, 14, COLORS.accent, 1, 'l')
   text(cr, 'up ' .. parse('${uptime_short}'), W - PAD, 56, 12, COLORS.text, 0.7, 'r', { font = MONO })
   text(cr, parse('${addr wlan0}'), W - PAD, 76, 12, COLORS.text, 0.7, 'r', { font = MONO })
   draw_battery(cr, 98)
+  draw_keep_awake(cr, 112)
 end
 
 local function draw_workspaces(cr, y)
