@@ -90,12 +90,14 @@ local function ring(cr, cx, cy, radius, thickness, pct)
   cairo_set_line_width(cr, thickness)
 
   set_color(cr, COLORS.dim, 0.35)
+  cairo_new_path(cr)
   cairo_arc(cr, cx, cy, radius, 0, 2 * math.pi)
   cairo_stroke(cr)
 
   local clamped = math.max(0, math.min(100, pct))
   if clamped > 0 then
     set_color(cr, level_color(clamped), 1)
+    cairo_new_path(cr)
     cairo_arc(cr, cx, cy, radius, start, start + (clamped / 100) * 2 * math.pi)
     cairo_stroke(cr)
   end

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Picom
+Exec=picom -b
+X-GNOME-Autostart-enabled=true

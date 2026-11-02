@@ -44,6 +44,25 @@ Comprueba, en este orden:
 - **Avisos de ajustes obsoletos:** en conky 1.25 `own_window_transparent`, `own_window_argb_visual` y `own_window_argb_value` están obsoletos. Usa `own_window_color = '#00000000'`. `cairo_xlib_surface_create` también: `modern.lua` usa `conky_surface()` cuando existe.
 - **`freq_g 0` da aviso:** los CPU se numeran desde 1 (`${freq_g 1}`).
 - **Cambios que no se ven:** reinicia conky; los cambios en `modern.lua` no se aplican en caliente.
+- **Una línea cruza los anillos (RAM, disco):** después de dibujar texto, Cairo deja un punto actual y el siguiente `cairo_arc` traza una línea hasta el inicio del arco. `ring()` en `modern.lua` llama a `cairo_new_path(cr)` antes de cada arco para evitarlo.
+
+## Picom y el compositor de xfwm4
+
+Solo puede haber un compositor. Para usar picom (esquinas redondeadas, blur en polybar):
+
+1. Desactiva el de xfwm4: `xfconf-query -c xfwm4 -p /general/use_compositing -s false` y reinicia con `xfwm4 --replace`. Cambiarlo en caliente sin reiniciar xfwm4 puede dejarlo en un estado degradado.
+2. Picom arranca con `config/autostart/picom.desktop`. Si ves `Another composite manager is already running`, xfwm4 sigue con su compositor activo.
+
+Notas de `picom.conf`:
+
+- `blur-method = "kawase"` no existe en picom v13; usa `dual_kawase`. El error es `Invalid blur method kawase`.
+- El blur está limitado al panel (`wintypes.dock`); con `blur-background = true` global el cambio entre workspaces se siente lento.
+- `corner-radius` excluye `dock` y `desktop` para no recortar polybar ni conky.
+- i3 define `border pixel 0` en `for_window`, por eso sus ventanas no muestran borde sin picom.
+
+## Los saltos entre workspaces se traban
+
+Si tras 4 o 5 cambios rápidos seguidos la respuesta se queda esperando, el compositor de xfwm4 está sincronizando cada frame con el vblank. Con `vblank_mode` en `off` (ver `xfwm4.xml`) desaparece. El costo es posible tearing al mover ventanas o ver video; si aparece, vuelve a `auto`.
 
 ## Editar configuraciones de conky con `sd`
 
