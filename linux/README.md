@@ -2,6 +2,8 @@
 
 Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta carpeta). La configuración de Linux proviene de un sistema CachyOS con Xfce (xfwm4), fish, alacritty, rofi, picom y conky (sin barra ni panel).
 
+> Documentación detallada por tema (atajos, Conky, workspaces, menús, solución de problemas): [`docs/`](docs/README.md).
+
 ## Estructura
 
 | Ruta | Destino en `$HOME` |
@@ -11,6 +13,7 @@ Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta
 | `linux/bin/` | `~/.local/bin/` (scripts de usuario) |
 | `linux/system/` | Archivos de sistema (`/etc`); **no** los enlaza el instalador, ver [Hotspot WiFi](#hotspot-wifi) |
 | `linux/packages/` | Listas informativas: `pacman-explicit.txt` y `aur.txt` |
+| `linux/docs/` | Documentación por tema (ver [`docs/README.md`](docs/README.md)) |
 | `linux/scan-secrets.sh` | Revisa archivos en busca de secretos antes de hacer commit |
 
 El instalador enlaza **archivo por archivo** (no carpetas completas), así las aplicaciones pueden seguir escribiendo otros archivos junto a los enlazados.
