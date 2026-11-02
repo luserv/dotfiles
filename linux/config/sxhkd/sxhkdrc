@@ -1,0 +1,3 @@
+# Workspace: previous (wrap-around)
+super + shift + ISO_Left_Tab
+    ~/.local/bin/ws-cycle prev

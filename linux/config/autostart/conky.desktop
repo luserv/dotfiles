@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Conky
+Comment=System monitor on the desktop
+Exec=sh -c "sleep 5 && conky -c /home/kv/.config/conky/conky.conf"
+Terminal=false
+X-GNOME-Autostart-enabled=true

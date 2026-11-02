@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Usage: ws-cycle next|prev
+# Cycles through workspaces that have windows (plus the current one),
+# with wrap-around. Sticky windows (desktop -1) are ignored.
+current=$(xdotool get_desktop)
+mapfile -t ids < <( { wmctrl -l | awk '$2>=0{print $2}'; echo "$current"; } | sort -nu )
+count=${#ids[@]}
+[ "$count" -le 1 ] && exit 0
+
+pos=0
+for i in "${!ids[@]}"; do
+  [ "${ids[$i]}" = "$current" ] && pos=$i
+done
+
+case "$1" in
+  next) target=${ids[$(( (pos + 1) % count ))]} ;;
+  prev) target=${ids[$(( (pos - 1 + count) % count ))]} ;;
+  *) echo "usage: ws-cycle next|prev" >&2; exit 1 ;;
+esac
+xdotool set_desktop "$target"

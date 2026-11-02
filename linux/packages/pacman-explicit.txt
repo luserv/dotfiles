@@ -85,6 +85,7 @@ chwd
 clang
 cliamp
 clinfo
+conky
 cpupower
 crackle
 cryptsetup
@@ -387,6 +388,7 @@ starship
 stress-ng
 sudo
 sushi
+sxhkd
 sysfsutils
 system-config-printer
 systemsettings

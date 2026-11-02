@@ -67,6 +67,28 @@ sudo ufw allow in on wlan0 to any port 67 proto udp
 
 El nombre de la conexión (`MiHotspot`) y la interfaz de salida (`enp43s0`) están fijos en el script del dispatcher; cámbialos si difieren.
 
+## Workspaces, Conky y atajos
+
+Navegación entre workspaces y panel de estado en el escritorio.
+
+| Pieza | Función |
+|---|---|
+| `linux/config/conky/conky.conf` | Panel: hora, workspaces, CPU, temperatura, uptime, RAM, disco, red (con IP de `wlan0`) y top de procesos |
+| `linux/config/conky/workspaces.sh` | Fila de workspaces para Conky: activo `[n]`, con ventanas normal, vacíos atenuados |
+| `linux/config/conky/ws-notify.sh` | Notificación (3 s) con los workspaces que tienen ventanas y el actual (`Super+Ctrl+Q`) |
+| `linux/bin/ws-cycle` | `ws-cycle next\|prev`: salta solo entre workspaces con ventanas, con vuelta al otro extremo |
+| `linux/config/sxhkd/sxhkdrc` | `Super+Shift+Tab` → `ws-cycle prev` |
+| `linux/config/autostart/{conky,sxhkd}.desktop` | Arrancan Conky y `sxhkd` con la sesión |
+
+`Super+Tab` (siguiente) se define en `xfce4-keyboard-shortcuts.xml` y `Super+Shift+Tab` (anterior) en `sxhkd`.
+
+Notas:
+
+- `sxhkd` es necesario porque `xfsettingsd` no dispara de forma fiable los atajos con `Shift+Tab`. Hay que quitar del XML cualquier atajo `<Super><Shift>Tab`, o ambos compiten por la tecla.
+- No asignes un atajo a `Super_L` solo (por ejemplo para el menú whisker): captura la tecla y `Super+Shift+Tab` solo funciona si se aprieta Shift primero.
+- Las rutas `/home/kv/...` están fijas en `conky.desktop` y en el XML de atajos; ajústalas si el usuario es otro.
+- Dependencias: `conky`, `sxhkd`, `wmctrl`, `xdotool` y `libnotify` (están en `pacman-explicit.txt`).
+
 ## Qué se excluye por privacidad
 
 No se versionan gestores de contraseñas (1Password, Bitwarden), mensajería (Signal), navegadores, clientes de sincronización (Nextcloud, filen, rclone), `gh`, configuraciones de herramientas de IA (opencode, claude), aplicaciones Electron/JetBrains/Code, ni archivos de sesión, caché, logs o bases de datos. Tampoco `*.bak`, `*.backup*` ni `git/config` (contiene identidad personal). Los archivos generados por la máquina (por ejemplo `fish_variables`) y los enlaces simbólicos a temas dinámicos tampoco se incluyen.
