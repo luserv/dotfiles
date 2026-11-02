@@ -25,9 +25,19 @@ Las teclas de volumen ejecutan `linux/bin/volume-notify up|down|mute`, que cambi
 
 - **Subir** usa `wpctl set-volume -l 1.0`, así que nunca pasa del 100%. Si ya estabas por encima, la tecla te devuelve al 100%.
 - **Bajar** y **silenciar** usan `pactl`.
-- El tope vale solo para estas teclas: `pavucontrol` u otras aplicaciones pueden seguir subiendo más allá del 100%.
+- El tope vale solo para estas teclas: otras herramientas (por ejemplo `wiremix`, que tiene su propio límite configurable con `max-volume-percent`) pueden seguir otras reglas.
+- Subir también quita el silencio del dispositivo.
 
-`Super+Ctrl+A` abre `pavucontrol`.
+`Super+Ctrl+A` abre `wiremix` (mezclador de terminal para PipeWire) en una ventana de alacritty. Sus pestañas son Playback, Recording, Output, Input y Configuration. `q` cierra; `d` fija el dispositivo seleccionado como por defecto; `c` abre el menú para enrutar una aplicación; `m` silencia.
+
+Las teclas de volumen actúan sobre el **dispositivo por defecto**. Para cambiarlo desde la terminal:
+
+```bash
+wpctl status                  # lista dispositivos; el por defecto lleva *
+wpctl set-default <id>        # fija la salida por defecto (queda guardada)
+```
+
+El dispositivo por defecto se guarda en PipeWire (`default.configured.audio.sink`).
 
 ## Mantener la pantalla activa (caffeine)
 

@@ -441,6 +441,7 @@ which
 whois
 wireless-regdb
 wireless_tools
+wiremix
 wireplumber
 wireshark-cli
 wl-clipboard

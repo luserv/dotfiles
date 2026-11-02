@@ -77,7 +77,7 @@
       <property name="&lt;Super&gt;&lt;Ctrl&gt;comma" type="string" value="xfce4-keyboard-settings"/>
       <property name="&lt;Super&gt;d" type="string" value="xfce4-display-settings --minimal"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;d" type="string" value="xfce4-display-settings"/>
-      <property name="&lt;Super&gt;&lt;Ctrl&gt;a" type="string" value="pavucontrol"/>
+      <property name="&lt;Super&gt;&lt;Ctrl&gt;a" type="string" value="alacritty --class=wiremix-tui --title=Audio -e wiremix"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;w" type="string" value="nm-connection-editor"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;b" type="string" value="alacritty --class=bluetooth-tui --title=Bluetooth -e bluetui"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;p" type="string" value="xfce4-power-manager-settings"/>

@@ -60,7 +60,7 @@ xfconf-query -c xfce4-keyboard-shortcuts -v -l | rg '^/commands/custom/'
 | `Super+Ctrl+D` / `Super+D` | Ajustes de pantalla / versión mínima |
 | `Super+Ctrl+P` | Ajustes de energía |
 | `Super+N` | Ajustes de notificaciones |
-| `Super+Ctrl+A` | Control de volumen (`pavucontrol`) |
+| `Super+Ctrl+A` | Mezclador de audio (`wiremix` en una terminal) |
 | `Super+Ctrl+B` | Bluetooth (`bluetui`); se cierra con `Esc` |
 | `Super+Ctrl+N` | Selector de redes (`networkmanager_dmenu`); incluye el submenú Hotspot |
 | `Super+Ctrl+W` | Editor de conexiones de red |
