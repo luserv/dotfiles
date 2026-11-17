@@ -2,7 +2,7 @@
 accountsservice
 aether
 airopy
-alacritty
+kitty
 alsa-firmware
 alsa-plugins
 alsa-utils

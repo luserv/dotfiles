@@ -31,7 +31,7 @@ show_qr() {
     ssid=$(get 802-11-wireless.ssid)
     pass=$(get 802-11-wireless-security.psk)
     payload="WIFI:T:WPA;S:$(esc "$ssid");P:$(esc "$pass");;"
-    alacritty --class hotspot-qr -T "Hotspot QR" -e bash -c '
+    kitty --class hotspot-qr --title "Hotspot QR" bash -c '
         qrencode -t ANSIUTF8 -m 2 "$1"
         printf "\n  SSID: %s\n  Pass: %s\n\n  Press Enter to close" "$2" "$3"
         read -r' _ "$payload" "$ssid" "$pass"

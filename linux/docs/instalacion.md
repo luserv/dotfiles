@@ -33,7 +33,7 @@ paru -S --needed - < linux/packages/aur.txt
 
 Revisa las listas antes de instalar: reflejan el sistema de origen.
 
-Dependencias de la parte de escritorio documentada aquí: `conky` (con Lua y Cairo), `sxhkd`, `wmctrl`, `xdotool`, `rofi`, `libnotify`, `jq`, `pipewire` con `wpctl` y `pactl`, `bluetui` y `alacritty`.
+Dependencias de la parte de escritorio documentada aquí: `conky` (con Lua y Cairo), `sxhkd`, `wmctrl`, `xdotool`, `rofi`, `libnotify`, `jq`, `pipewire` con `wpctl` y `pactl`, `bluetui` y `kitty`.
 
 ## Después de instalar
 

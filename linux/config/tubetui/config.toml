@@ -1,0 +1,11 @@
+[session]
+asked = true
+browser = "firefox:/home/kv/.config/mozilla/firefox/79q15dlu.default-release"
+cookies_file = ""
+
+[search]
+topics = ["emotional flux pavilion"]
+
+[player]
+mode = "embedded"
+prefer_codec = ""

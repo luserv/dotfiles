@@ -37,7 +37,7 @@ xfconf-query -c xfce4-keyboard-shortcuts -v -l | rg '^/commands/custom/'
 
 | Atajo | Acción |
 |---|---|
-| `Super+Return` | Terminal (alacritty) |
+| `Super+Return` | Terminal (kitty) |
 | `Super+Espacio`, `Super+Alt+Espacio` | Lanzador de aplicaciones (rofi, con tema Tokyo Night) |
 | `Super+R` | `xfce4-appfinder` |
 | `Super+B` / `Super+Shift+B` | Navegador / navegador en modo privado |

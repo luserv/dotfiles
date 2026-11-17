@@ -92,3 +92,8 @@ style = "Regular"
 [font.bold]
 family = "Hack Nerd Font Mono"
 style = "Bold"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

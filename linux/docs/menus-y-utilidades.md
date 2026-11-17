@@ -15,7 +15,7 @@ Los iconos son glifos de Nerd Font escritos como escapes Unicode (`$''`), as�
 
 ## Bluetooth
 
-`Super+Ctrl+B` abre `bluetui` en una ventana de alacritty (clase `bluetooth-tui`).
+`Super+Ctrl+B` abre `bluetui` en una ventana de kitty (clase `bluetooth-tui`).
 
 `linux/config/bluetui/config.toml` contiene `esc_quit = true`, que permite cerrar la aplicación con `Esc`. Si estás dentro de un popup (por ejemplo al emparejar), el primer `Esc` puede cerrar solo ese popup.
 
@@ -28,7 +28,7 @@ Las teclas de volumen ejecutan `linux/bin/volume-notify up|down|mute`, que cambi
 - El tope vale solo para estas teclas: otras herramientas (por ejemplo `wiremix`, que tiene su propio límite configurable con `max-volume-percent`) pueden seguir otras reglas.
 - Subir también quita el silencio del dispositivo.
 
-`Super+Ctrl+A` abre `wiremix` (mezclador de terminal para PipeWire) en una ventana de alacritty. Sus pestañas son Playback, Recording, Output, Input y Configuration. `q` cierra; `d` fija el dispositivo seleccionado como por defecto; `c` abre el menú para enrutar una aplicación; `m` silencia.
+`Super+Ctrl+A` abre `wiremix` (mezclador de terminal para PipeWire) en una ventana de kitty. Sus pestañas son Playback, Recording, Output, Input y Configuration. `q` cierra; `d` fija el dispositivo seleccionado como por defecto; `c` abre el menú para enrutar una aplicación; `m` silencia.
 
 Las teclas de volumen actúan sobre el **dispositivo por defecto**. Para cambiarlo desde la terminal:
 

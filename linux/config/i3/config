@@ -210,10 +210,10 @@ bindsym $mod+Shift+s exec flameshot gui
 #Rofi
 bindsym $mod+Shift+Return exec rofi -show drun
 
-# Open alacritty
-# https://github.com/alacritty/alacritty
-# Config file at ~/.config/alacritty/alacritty.yml
-bindsym $mod+Return exec alacritty
+# Open kitty
+# https://sw.kovidgoyal.net/kitty/
+# Config file at ~/.config/kitty/kitty.conf
+bindsym $mod+Return exec kitty
 
 #File Manager
 bindsym $mod+e exec thunar

@@ -1,7 +1,7 @@
 ### --- PATH & ENVIRONMENT (Keep these at the top) ---
 set PATH /usr/bin:/usr/local/bin $PATH
-set -gx TERMINAL alacritty
-set -gx XTERM alacritty
+set -gx TERMINAL kitty
+set -gx XTERM kitty
 
 # Bun setup
 set --export BUN_INSTALL "$HOME/.bun"

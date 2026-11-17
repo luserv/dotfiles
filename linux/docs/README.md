@@ -1,6 +1,6 @@
 # Documentación de los dotfiles de Linux
 
-Guía de la configuración de Linux de este repositorio (CachyOS con Xfce y xfwm4, fish, alacritty, rofi, picom y conky; sin barra ni panel).
+Guía de la configuración de Linux de este repositorio (CachyOS con Xfce y xfwm4, fish, kitty, rofi, picom y conky; sin barra ni panel).
 
 ## Páginas
 

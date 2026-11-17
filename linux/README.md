@@ -1,6 +1,6 @@
 # Dotfiles de Linux
 
-Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta carpeta). La configuración de Linux proviene de un sistema CachyOS con Xfce (xfwm4), fish, alacritty, rofi, picom y conky (sin barra ni panel).
+Este repositorio cubre Windows 11 (raíz del repo, `terminal.ps1`) y Linux (esta carpeta). La configuración de Linux proviene de un sistema CachyOS con Xfce (xfwm4), fish, kitty, rofi, picom y conky (sin barra ni panel).
 
 > Documentación detallada por tema (atajos, Conky, workspaces, menús, solución de problemas): [`docs/`](docs/README.md).
 
@@ -46,7 +46,7 @@ Piezas (las tres primeras las enlaza `install-linux.sh`):
 
 - `linux/config/networkmanager-dmenu/config.ini`: apunta `dmenu_command` al wrapper. Contiene la ruta absoluta `/home/kv/...`; ajústala si el usuario es otro.
 - `linux/home/.local/share/nmdm-wrapper/rofi`: wrapper que intercepta las líneas `...:Hotspot`. Se llama `rofi` a propósito para que `networkmanager_dmenu` siga pasándole sus flags de rofi.
-- `linux/bin/hotspot-menu`: el submenú (requiere `rofi`, `alacritty`, `qrencode`, `libnotify`).
+- `linux/bin/hotspot-menu`: el submenú (requiere `rofi`, `kitty`, `qrencode`, `libnotify`).
 - `linux/system/NetworkManager/dispatcher.d/90-hotspot-forward`: reglas de `DOCKER-USER` para que Docker no descarte el reenvío del hotspot.
 
 Pasos manuales (requieren `sudo`; el instalador se niega a correr como root):
