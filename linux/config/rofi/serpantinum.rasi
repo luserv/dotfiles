@@ -1,0 +1,35 @@
+* {
+    bg:        #0f1417f2;
+    bg-alt:    #1b2023;
+    fg:        #dfe3e7;
+    accent:    #8ccff1;
+    on-accent: #003547;
+    muted:     #8a9297;
+    border:    #40484c;
+    background-color: transparent;
+    text-color: @fg;
+    font: "Adwaita Mono 11";
+}
+window {
+    background-color: @bg;
+    border: 1px;
+    border-color: @border;
+    border-radius: 12px;
+    padding: 14px;
+    width: 560px;
+}
+mainbox { children: [ inputbar, listview ]; spacing: 10px; }
+inputbar {
+    background-color: @bg-alt;
+    border-radius: 10px;
+    padding: 10px 14px;
+    children: [ prompt, entry ];
+    spacing: 8px;
+}
+prompt { text-color: @accent; }
+entry { placeholder: "Buscar aplicaciones..."; placeholder-color: @muted; }
+listview { lines: 8; columns: 1; fixed-height: true; spacing: 4px; scrollbar: false; }
+element { padding: 8px 12px; border-radius: 10px; spacing: 10px; }
+element selected.normal { background-color: @accent; text-color: @on-accent; }
+element-icon { size: 24px; }
+element-text { vertical-align: 0.5; }

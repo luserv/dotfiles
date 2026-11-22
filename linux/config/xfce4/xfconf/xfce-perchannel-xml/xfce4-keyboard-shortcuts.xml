@@ -66,10 +66,10 @@
       <property name="&lt;Super&gt;&lt;Ctrl&gt;z" type="string" value="xdotool key ctrl+plus 2&gt;/dev/null || true"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;&lt;Alt&gt;z" type="string" value="xdotool key ctrl+0 2&gt;/dev/null || true"/>
       <property name="&lt;Alt&gt;Print" type="string" value="scrot -u"/>
-      <property name="&lt;Super&gt;space" type="string" value="rofi -show drun -theme /home/kv/.config/rofi/theme.rasi"/>
+      <property name="&lt;Super&gt;space" type="string" value="rofi -show drun -theme /home/kv/.config/rofi/serpantinum.rasi"/>
       <property name="&lt;Super&gt;l" type="string" value="xflock4"/>
       <property name="&lt;Super&gt;&lt;Ctrl&gt;l" type="string" value="xflock4"/>
-      <property name="&lt;Super&gt;e" type="string" value="nemo"/>
+      <property name="&lt;Super&gt;e" type="string" value="ski"/>
       <property name="&lt;Super&gt;&lt;Shift&gt;e" type="string" value="nemo"/>
       <property name="&lt;Super&gt;b" type="string" value="exo-open --launch WebBrowser"/>
       <property name="&lt;Super&gt;&lt;Shift&gt;b" type="string" value="exo-open --launch WebBrowser --private"/>

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Bloqueo estilo serpantinum con i3lock-color (paleta matugen)
+exec i3lock \
+  --color=0f1417ff \
+  --clock --indicator --ignore-empty-password \
+  --radius=90 --ring-width=8 \
+  --inside-color=1b2023ff --ring-color=40484cff \
+  --line-color=00000000 --separator-color=00000000 \
+  --keyhl-color=8ccff1ff --bshl-color=ffb4abff \
+  --insidever-color=1b2023ff --ringver-color=b4cad6ff \
+  --insidewrong-color=1b2023ff --ringwrong-color=ffb4abff \
+  --time-color=dfe3e7ff --date-color=8a9297ff \
+  --time-str="%H:%M" --date-str="%A, %d %B" \
+  --time-font="Adwaita Mono" --date-font="Adwaita Mono" \
+  --time-size=42 --date-size=16 \
+  --verif-text="" --wrong-text="" --noinput-text="" --lock-text="" --lockfailed-text="" \
+  "$@"
